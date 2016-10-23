@@ -22,8 +22,8 @@ var Manager = (
 )();
 
 Manager.define("output", [], function(){
-	function write (name) {
-		console.log(name);
+	function write (data) {
+		console.log(data);
 	}
 
 	return {
@@ -31,6 +31,22 @@ Manager.define("output", [], function(){
 	}
 });
 
-var output = Manager.require("output");
+Manager.define("calculate", ["output"], function(output) {
 
-output.write("Manoj");
+	function add () {
+		var total = 0;
+		for(var i = 0; i < arguments.length; i++) {
+			total += arguments[i];
+		}
+		output.write(total);
+	}
+
+	return {
+		add: add
+	}
+
+})
+
+var calculate = Manager.require("calculate")
+
+calculate.add(3, 4, 5, 6);
