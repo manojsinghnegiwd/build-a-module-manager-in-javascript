@@ -1,22 +1,36 @@
 var Manager = (
 	function Manager() {
 
-		var modules = {
-			dummy: function(name) {
-				console.log("Hello My name is " + name)
-			}
-		};
+		var modules = {};
 
 		function require(module_name) {
 			return modules[module_name];
 		}
 
+		function define(module_name, dependencies, defination) {
+			for (var i = 0; i < dependencies.length; i++) {
+				dependencies[i] = modules[dependencies[i]];
+			}
+			modules[module_name] = defination.apply(defination, dependencies);
+		}
+
 		return {
-			require: require
+			require: require,
+			define: define
 		}
 	}
 )();
 
-var dummy = Manager.require("dummy");
+Manager.define("output", [], function(){
+	function write (name) {
+		console.log(name);
+	}
 
-dummy("Manoj");
+	return {
+		write: write
+	}
+});
+
+var output = Manager.require("output");
+
+output.write("Manoj");
