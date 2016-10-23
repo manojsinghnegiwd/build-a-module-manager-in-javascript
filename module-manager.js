@@ -7,8 +7,16 @@ var Manager = (
 			}
 		};
 
-		return modules;
+		function require(module_name) {
+			return modules[module_name];
+		}
+
+		return {
+			require: require
+		}
 	}
 )();
 
-Manager.dummy('Manoj');
+var dummy = Manager.require("dummy");
+
+dummy("Manoj");
